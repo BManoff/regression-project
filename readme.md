@@ -20,13 +20,13 @@ How does home age relate to value?
 
 | Variable                                      Meaning         
 | -----------                                  -----------       
-|  |                  
-|              |         
-|                 |         
-|                       |         
-|                  |           
-|                    |       
-|           |        
+| taxdollarcnt                  | How much the home is worth in value                
+| bedroomcnt                    | How many bedrooms the home has        
+| bathroomcnt                   | How many bathrooms the home has        
+| calculatedfinishedsquarefeet  | Size of the home, in square footage        
+| fips                          | The geographical area that the home is located in          
+| yearbuilt                     | The year that the home was constructed      
+     
                               
 
 
