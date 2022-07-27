@@ -15,6 +15,7 @@ warnings.filterwarnings("ignore")
 def get_connection(db, user=env.user, host=env.host, password=env.password):
     return f'mysql+pymysql://{user}:{password}@{host}/{db}'
 
+# Splitting the data into train, validate and test 
 def train_validate_test_split(df, seed=123):
     train_and_validate, test = train_test_split(
         df, test_size=0.2, random_state=seed
@@ -56,42 +57,43 @@ def get_wrangle_zillow():
         )
 
 
-        # Return the dataframe 
+        # Return the dataframe after pulling the query
         return df  
 
 def handle_nulls(df):
       
+    #dropping all the na values
+    df = df.dropna() 
 
-    df = df.dropna() #dropping all the na values
-
-         # Return the dataframe 
+    # returning the dataframe once all changes have been made
     return df
 
 
 
 
 def type_change(df):
-    df["fips"] = df["fips"].astype(int)
+    df["fips"] = df["fips"].astype(int) # Changing fips feature to an integer data type
 
-    df["yearbuilt"] = df["yearbuilt"].astype(int)
+    df["yearbuilt"] = df["yearbuilt"].astype(int) # Changing yearbuilt feature to an integer data type
 
-    df["bedroomcnt"] = df["bedroomcnt"].astype(int)   
+    df["bedroomcnt"] = df["bedroomcnt"].astype(int)  # Changing bedroomcnt feature to an integer data type 
 
-    df["taxvaluedollarcnt"] = df["taxvaluedollarcnt"].astype(int)
+    df["taxvaluedollarcnt"] = df["taxvaluedollarcnt"].astype(int) # Changing taxvaluedollar feature to an integer data type
 
-    df["calculatedfinishedsquarefeet"] = df["calculatedfinishedsquarefeet"].astype(int)
+    df["calculatedfinishedsquarefeet"] = df["calculatedfinishedsquarefeet"].astype(int) # Changing calculatedfinishedsquarefeet feature to an integer data type
 
-    return df
+    return df # returning the dataframe once all changes have been made
 
 def handle_outliers(df):
     
+    # defining quartiles to get rid of outliers outside of the inter-quartile range (IQR)
     cols = ['bedroomcnt', 'bathroomcnt', 'calculatedfinishedsquarefeet', 'taxvaluedollarcnt', 'yearbuilt']
     Q1 = df[cols].quantile(0.25)
     Q3 = df[cols].quantile(0.75)
     IQR = Q3 - Q1
-
     df = df[~((df[cols] < (Q1 - 1.5 * IQR)) |(df[cols] > (Q3 + 1.5 * IQR))).any(axis=1)]
     
+    # setting hard limits on bathroom counts, bedroom counts, and value upper limit, just in case they weren't filtered out by the IQR range
     df = df[df.bathroomcnt <= 6]
     
     df = df[df.bedroomcnt <= 6]
@@ -103,17 +105,17 @@ def handle_outliers(df):
 
 def wrangle_zillow():
 
-   df = get_wrangle_zillow()
+   df = get_wrangle_zillow() # calling the original wrangle function to pull from the Zillow data
 
-   df = handle_nulls(df)
+   df = handle_nulls(df) # calling function to get rid of nulls
 
-   df = type_change(df)
+   df = type_change(df) # calling change to integers for features that need it
 
-   df = handle_outliers(df)
+   df = handle_outliers(df) # calling function to remove outliers in data
 
-   df.to_csv('zillow.csv', index=False)
+   df.to_csv('zillow.csv', index=False) # exporting the dataframe to a csv file
 
-   return df
+   return df # returning the df after wrangling and cleaning the data
 
 
 def scale_data(train, validate, test, features_to_scale):
@@ -135,6 +137,7 @@ def scale_data(train, validate, test, features_to_scale):
     validate_scaled = pd.concat([validate, pd.DataFrame(scaled_validate,index=validate.index, columns = scaled_columns)],axis=1)
     test_scaled = pd.concat([test, pd.DataFrame(scaled_test,index=test.index, columns = scaled_columns)],axis=1)
 
+    # returning the  split and scaled data
     return train_scaled, validate_scaled, test_scaled
 
 
