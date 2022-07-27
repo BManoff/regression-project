@@ -1,6 +1,6 @@
 ### Project Goals
 
-The project goal is to Predict home value based on features from the Zillow dataframe.
+The project goal is to predict home value based on features from the Zillow dataframe.
 
 
 ### Project Description
@@ -46,10 +46,11 @@ How does home age relate to value?
 2.) Data aquisition
 3.) Data cleaning
 4.) Exploration
-5.) Modeling explored data
-6.) drawing conclusions
-7.) Making suggestions based on models
-8.) Making suggestions for next steps
+5.) Scaling data
+6.) Modeling explored data
+7.) drawing conclusions
+8.) Making suggestions based on models
+9.) Making suggestions for next steps
 
 ### Key Findings
 

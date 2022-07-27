@@ -28,12 +28,12 @@ def train_validate_test_split(df, seed=123):
     return train, validate, test
 
 def get_wrangle_zillow():
-    # Get local cached file if it's there
-    #filename = "zillow.csv" 
+    #Get local cached file if it's there
+    filename = "zillow.csv" 
 
-    #if os.path.isfile(filename):
-        #return pd.read_csv(filename)
-    #else:
+    if os.path.isfile(filename):
+        return pd.read_csv(filename)
+    else:
         # read the SQL query into a dataframe
         df = pd.read_sql(
         ''' 
@@ -100,7 +100,9 @@ def handle_outliers(df):
 
     df = df[df.taxvaluedollarcnt < 2_000_000]
 
+    # return the dataframe after all changes have been made
     return df
+
 
 
 def wrangle_zillow():
